@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      font-family: sans-serif;
+    }
+    .card {
+      width: 350px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #ddd;
+      padding: 20px;
+      text-align: center;
+    }
+    .card img {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .login {
+      background: #28a745;
+      color: #fff;
+      border: none;
+    }
+    .cancel {
+      background: #dc3545;
+      color: #fff;
+      width: auto;
+      padding: 6px 14px;
+      margin: 0;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .alert {
+      display: none;
+      font-size: 13px;
+      margin-top: 6px;
+      color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="avatar">
+    <form id="form">
+      <input id="user" placeholder="Username" required>
+      <input id="pass" type="password" placeholder="Password" required>
+      <button class="login">Login</button>
+      <label>
+        <input type="checkbox"> Remember me
+      </label>
+      <div id="msg" class="alert"></div>
+      <div class="row">
+        <button type="button" class="cancel" id="cancel">Cancel</button>
+        <a href="#">Forgot password?</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    const userInput = document.querySelector("#user");
+    const passInput = document.querySelector("#pass");
+    const msg = document.querySelector("#msg");
+    const form = document.querySelector("#form");
+    const cancelBtn = document.querySelector("#cancel");
+
+    let tries = 0;
+    const maxTries = 3;
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+
+      if (userInput.value === "admin" && passInput.value === "123456") {
+        showMessage("Login success", "green");
+        tries = 0;
+      } else {
+        tries++;
+        if (tries >= maxTries) {
+          showMessage("Account locked!", "#b91c1c");
+          userInput.disabled = true;
+          passInput.disabled = true;
+        } else {
+          const left = maxTries - tries;
+          showMessage(`Wrong! attempts left: ${left}`, "#b91c1c");
+        }
+      }
+    };
+
+    cancelBtn.onclick = () => {
+      userInput.value = "";
+      passInput.value = "";
+      msg.style.display = "none";
+    };
+
+    function showMessage(text, color) {
+      msg.style.display = "block";
+      msg.style.color = color;
+      msg.textContent = text;
+    }
+  </script>
+</body>
+</html>
